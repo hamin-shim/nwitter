@@ -1,3 +1,3 @@
 import React from "react";
 
-export default ()=>"Auth";
+export default ()=><div>Edit Profile</div>;
