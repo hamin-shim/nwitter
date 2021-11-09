@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { authService } from "../nwitterFirebase";
+import { authService, firebaseInstance } from "../nwitterFirebase";
 
 export default ()=>{
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [newAccount, setNewAccount] = useState(true)
+    const [newAccount, setNewAccount] = useState(false)
     const onChange = (event)=>{
         const {target: {name, value}} = event;
         if(name==="email"){
@@ -23,11 +23,18 @@ export default ()=>{
             else{
                 data = await authService.signInWithEmailAndPassword(email, password)
             }
-            console.log(data)
         }catch(error){
             console.log(error)
         }
         
+    }
+    const toggleAccount = ()=>{
+        setNewAccount((prev)=>!prev)
+    }
+    const onGoogleClick = async()=>{
+        let provider = new firebaseInstance.auth.GoogleAuthProvider();
+        const data =  await authService.signInWithPopup(provider);
+        console.log(data)
     }
     return(
         <div>
@@ -36,8 +43,9 @@ export default ()=>{
                 <input  name = "password" onChange={onChange} type="password" placeholder="Password" required value={password}/>
                 <input type="submit" value={newAccount ? "sign in" : "Log In"}/>
             </form>
+            <span onClick={toggleAccount}>{newAccount? "Log in" : "create accout"}</span>
             <div>
-                <button>Continue with Google</button>
+                <button onClick={onGoogleClick}>Continue with Google</button>
             </div>
         </div>
 )};
