@@ -7,7 +7,6 @@ export default ({nweetObj, isOwner})=>{
     const onDeleteClick = async()=>{
         const ok = window.confirm("Are you sure to delete?");
         if(ok){
-            console.log("ok!")
             await dbService.doc(`nweets/${nweetObj.id}`).delete();
         }else{
             console.log("not okay")
@@ -15,13 +14,21 @@ export default ({nweetObj, isOwner})=>{
     }
     const toggleEditing = ()=>setEdit(prev=>!prev)
     const onChange = (e)=>setNewNweet(e.target.value)
-    const onSubmit = (e)=>{e.preventDefault();console.log(newNweet)}
+    const onSubmit = (e)=>{
+        e.preventDefault();
+        console.log(nweetObj,newNweet);
+        dbService.doc(`nweets/${nweetObj.id}`).update({
+            text: newNweet,
+        })
+        setEdit(false)
+    }
     return(
         <div>
             {
                 edit ? <>
                 <form onSubmit={onSubmit}>
                     <input onChange={onChange} type="text" placeholder="Edit your nweet" value={newNweet} required/>
+                    <input value="update" type="submit"/>
                 </form>
                 <button onClick={toggleEditing}>Cancel</button>
                 </> : <>
