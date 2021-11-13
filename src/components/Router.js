@@ -5,14 +5,14 @@ import Home from "../routes/Home";
 import Profile from "../routes/Profile";
 import Navigation from "./Nav";
 
-const Approuter = ({isLoggedIn})=>{
+const Approuter = ({isLoggedIn, userObj})=>{
     return(
         <Router>
             {isLoggedIn && <Navigation/>}
             <Switch>
                 {isLoggedIn ? 
                 (<>
-                <Route exact path="/"><Home/>
+                <Route exact path="/"><Home userObj={userObj}/>
                 </Route>
                 <Route path = "/profile"><Profile/></Route>
                 </>)

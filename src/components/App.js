@@ -6,10 +6,12 @@ import {authService} from "../nwitterFirebase"
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [init, setInit] = useState(false)
+  const [userObj, setUserObj] = useState(null)
   useEffect(()=>{
     authService.onAuthStateChanged((user)=>{
       if(user){
         setIsLoggedIn(true);
+        setUserObj(user);
       } else{
         setIsLoggedIn(false)
       }
@@ -18,7 +20,7 @@ function App() {
   },[])
   return (
     <div className="App">
-      {init ? <Approuter isLoggedIn={isLoggedIn}/> : "loading..."}
+      {init ? <Approuter isLoggedIn={isLoggedIn} userObj={userObj}/> : "loading..."}
     </div>
   );
 }
